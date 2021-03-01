@@ -1,23 +1,38 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import ClubTitle from './components/ClubTitle/ClubTitle';
+import PlayerDetails from './components/PlayerDetails/PlayerDetails';
+import player from './MOCK_DATA.json';
+import ClubDetails from './components/ClubDetails/ClubDetails';
 
 function App() {
+  useEffect(() => {
+    document.title = "Manchester United team maker"
+  }, [])
+  const [players, setPlayers] = useState([])
+  useEffect(() => {
+    setPlayers(player)
+  }, [])
+  const [finalPlayer, setfinalPlayer] = useState([])
+
+  const playerAddingTeam = (player) => {
+    const playerList = [...finalPlayer, player]
+    setfinalPlayer(playerList)
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header>
+        <ClubTitle></ClubTitle>
       </header>
+      <div style={{float: 'left', width: '70vw'}}>
+        {
+          players.map(element => <PlayerDetails playerAddingTeam={playerAddingTeam} player={element}></PlayerDetails>)
+        }
+      </div>
+      <div style={{float: 'left'}}>
+        <ClubDetails players={finalPlayer}></ClubDetails>
+      </div>
+
     </div>
   );
 }
